@@ -9,17 +9,6 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-    };
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,7 +18,7 @@
       flake = false;
     };
   };
-  outputs = { self, darwin, nix-homebrew, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, agenix, secrets } @inputs:
+  outputs = { self, darwin, home-manager, nixpkgs, disko, agenix, secrets } @inputs:
     let
       user = "green";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -52,34 +41,25 @@
     in
     {
       devShells = forAllSystems devShell;
-      darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems
-        (system: darwin.lib.darwinSystem (
-          let
-            user = "green";
-          in
-          {
-            system = system;
-            specialArgs = inputs;
-            modules = [
-              nix-homebrew.darwinModules.nix-homebrew
-              home-manager.darwinModules.home-manager
+      test = nixpkgs.lib.darwin.apple_sdk.frameworks.CoreFoundation;
+      darwinConfigurations =
+        {
+          "greens-MacBook-Pro" = darwin.lib.darwinSystem
+            (
+              let
+                user = "green";
+                system = "x86_64-darwin";
+              in
               {
-                nix-homebrew = {
-                  enable = true;
-                  user = "${user}";
-                  taps = {
-                    "homebrew/homebrew-core" = homebrew-core;
-                    "homebrew/homebrew-cask" = homebrew-cask;
-                  };
-                  mutableTaps = false;
-                  autoMigrate = true;
-                };
+                system = system;
+                specialArgs = inputs;
+                modules = [
+                  home-manager.darwinModules.home-manager
+                  ./darwin
+                ];
               }
-              ./darwin
-            ];
-          }
-        ));
-
+            );
+        };
       nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (system: nixpkgs.lib.nixosSystem {
         system = system;
         specialArgs = inputs;

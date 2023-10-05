@@ -24,7 +24,7 @@ with pkgs; [
   # Encryption and security tools
   # _1password
   age
-  age-plugin-yubikey
+  # age-plugin-yubikey
   # gnupg
   # libfido2
   # pinentry

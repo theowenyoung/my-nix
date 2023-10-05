@@ -1,8 +1,10 @@
 { config, pkgs, lib, ... }:
 
-let name = "Owen Young";
-    user = "green";
-    email = "theowenyoung@gmail.com"; in
+let
+  name = "Owen Young";
+  user = "green";
+  email = "theowenyoung@gmail.com";
+in
 {
   # Shared shell configuration
   zsh.enable = true;
@@ -10,14 +12,14 @@ let name = "Owen Young";
   zsh.cdpath = [ "~/.local/share/src" ];
   zsh.plugins = [
     {
-        name = "powerlevel10k";
-        src = pkgs.zsh-powerlevel10k;
-        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      name = "powerlevel10k";
+      src = pkgs.zsh-powerlevel10k;
+      file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     }
     {
-        name = "powerlevel10k-config";
-        src = lib.cleanSource ./config;
-        file = "p10k.zsh";
+      name = "powerlevel10k-config";
+      src = lib.cleanSource ./config;
+      file = "p10k.zsh";
     }
   ];
   zsh.initExtraFirst = ''
@@ -40,12 +42,7 @@ let name = "Owen Young";
 
     # Emacs is my editor
     export ALTERNATE_EDITOR=""
-    export EDITOR="emacsclient -t"
-    export VISUAL="emacsclient -c -a emacs"
-
-    e() {
-        emacsclient -t "$@"
-    }
+    export EDITOR="vim"
 
     # nix shortcuts
     shell() {
@@ -73,11 +70,10 @@ let name = "Owen Young";
     };
     extraConfig = {
       init.defaultBranch = "main";
-      core = { 
-	    editor = "vim";
+      core = {
+        editor = "vim";
         autocrlf = "input";
       };
-      commit.gpgsign = true;
       pull.rebase = true;
       rebase.autoStash = true;
     };
@@ -190,8 +186,8 @@ let name = "Owen Young";
 
       let g:airline_theme='bubblegum'
       let g:airline_powerline_fonts = 1
-      '';
-     };
+    '';
+  };
 
   alacritty = {
     enable = true;
@@ -269,11 +265,11 @@ let name = "Owen Young";
       ''
       (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
         ''
-          IdentityFile /home/${user}/.ssh/id_github
+          IdentityFile /home/${user}/.ssh/id_ed25519
         '')
       (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
         ''
-          IdentityFile /Users/${user}/.ssh/id_github
+          IdentityFile /Users/${user}/.ssh/id_ed25519
         '')
     ];
   };
@@ -288,7 +284,7 @@ let name = "Owen Young";
       {
         plugin = power-theme;
         extraConfig = ''
-           set -g @tmux_power_theme 'gold'
+          set -g @tmux_power_theme 'gold'
         '';
       }
       {
@@ -359,6 +355,6 @@ let name = "Owen Young";
       bind-key -T copy-mode-vi 'C-k' select-pane -U
       bind-key -T copy-mode-vi 'C-l' select-pane -R
       bind-key -T copy-mode-vi 'C-\' select-pane -l
-      '';
-    };
+    '';
+  };
 }

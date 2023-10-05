@@ -5,35 +5,15 @@ VERSION=1.0
 GREEN='\033[1;32m'
 RED='\033[1;31m'
 CLEAR='\033[0m'
+FLAKE_TARGET="greens-MacBook-Pro"
 
-ARCH=$(uname -m)
-
-case "$ARCH" in
-  x86_64)
-    FLAKE_TARGET="x86_64-darwin"
-    ;;
-  aarch64)
-    FLAKE_TARGET="aarch64-darwin"
-    ;;
-  *)
-    echo -e "${RED}Unsupported architecture: $ARCH${CLEAR}"
-    exit 1
-    ;;
-esac
-
-SYSTEM="darwinConfigurations.$FLAKE_TARGET"
+SYSTEM="darwinConfigurations.$FLAKE_TARGET.system"
 
 export NIXPKGS_ALLOW_UNFREE=1
 
 # Navigate to the directory of this script
 cd $(dirname $(readlink -f $0))
 cd ..
-
-echo "${GREEN}Requesting sudo to set homebrew tap permissions...${CLEAR}"
-
-# This is reset by nix-homebrew, we need write permission to this dir to manage homebrew taps
-sudo mkdir -p /opt/homebrew/Library/Taps/homebrew/
-sudo /bin/chmod +a "green allow list,add_file,search,delete,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,writesecurity,chown" /opt/homebrew/Library/Taps/homebrew/
 
 echo "${GREEN}Starting build...${CLEAR}"
 
