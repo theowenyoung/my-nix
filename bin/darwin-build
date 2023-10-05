@@ -6,8 +6,22 @@ GREEN='\033[1;32m'
 RED='\033[1;31m'
 CLEAR='\033[0m'
 
-FLAKE="macos"
-SYSTEM="darwinConfigurations.$FLAKE.system"
+ARCH=$(uname -m)
+
+case "$ARCH" in
+  x86_64)
+    FLAKE_TARGET="x86_64-darwin"
+    ;;
+  aarch64)
+    FLAKE_TARGET="aarch64-darwin"
+    ;;
+  *)
+    echo -e "${RED}Unsupported architecture: $ARCH${CLEAR}"
+    exit 1
+    ;;
+esac
+
+SYSTEM="darwinConfigurations.$FLAKE_TARGET"
 
 export NIXPKGS_ALLOW_UNFREE=1
 

@@ -1,4 +1,3 @@
-
 {
   description = "Starter Configuration for NixOS and MacOS";
 
@@ -26,7 +25,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     secrets = {
-      url = "github:dustinlyons/nix-secrets/main"; # Change this!
+      url = "git+ssh://git@github.com/theowenyoung/private.git"; # Change this!
       flake = false;
     };
   };
@@ -34,28 +33,33 @@
     let
       user = "green";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
-      darwinSystems = ["x86_64-darwin" , "aarch64-darwin" ];
+      darwinSystems = [ "x86_64-darwin" "aarch64-darwin" ];
       forAllLinuxSystems = f: nixpkgs.lib.genAttrs linuxSystems (system: f system);
       forAllDarwinSystems = f: nixpkgs.lib.genAttrs darwinSystems (system: f system);
       forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
-      devShell = system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-      {
-        default = with pkgs; mkShell {
-          nativeBuildInputs = with pkgs; [ bashInteractive git age age-plugin-yubikey ];
-          shellHook = with pkgs; ''
-            export EDITOR=vim
-          '';
+      devShell = system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = with pkgs; mkShell {
+            nativeBuildInputs = with pkgs; [ bashInteractive git age age-plugin-yubikey ];
+            shellHook = with pkgs; ''
+              export EDITOR=vim
+            '';
+          };
         };
-      };
     in
     {
       devShells = forAllSystems devShell;
-      darwinConfigurations = let
-        user = "green";
-        darwinSystem = system: darwin.lib.darwinSystem {
-            system = architecture;
+
+      darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems
+        (system: darwin.lib.darwinSystem (
+          let
+            user = "green";
+          in
+          {
+            system = system;
             specialArgs = inputs;
             modules = [
               nix-homebrew.darwinModules.nix-homebrew
@@ -74,20 +78,33 @@
               }
               ./darwin
             ];
-      };
-      in nixpkgs.lib.genAttrs darwinSystems darwinSystem;
-      nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (system: nixpkgs.lib.nixosSystem {
-        system = system;
-        specialArgs = inputs;
-        modules = [
-          disko.nixosModules.disko
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${user} = import ./nixos/home-manager.nix;
           }
-          ./nixos
-        ];
-     });
-  };
+        ));
+      nixosConfigurations =
+        {
+          test = darwin.lib.darwinSystem {
+            system = "x86_64-darwin";
+            specialArgs = inputs;
+            modules = [
+              nix-homebrew.darwinModules.nix-homebrew
+              home-manager.darwinModules.home-manager
+              {
+                nix-homebrew = {
+                  enable = true;
+                  user = "green";
+                  taps = {
+                    "homebrew/homebrew-core" = homebrew-core;
+                    "homebrew/homebrew-cask" = homebrew-cask;
+                  };
+                  mutableTaps = false;
+                  autoMigrate = true;
+                };
+              }
+              ./darwin
+            ];
+          };
+        };
+
+
+    };
 }
