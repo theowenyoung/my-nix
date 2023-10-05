@@ -52,7 +52,6 @@
     in
     {
       devShells = forAllSystems devShell;
-
       darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems
         (system: darwin.lib.darwinSystem (
           let
@@ -80,31 +79,20 @@
             ];
           }
         ));
-      nixosConfigurations =
-        {
-          test = darwin.lib.darwinSystem {
-            system = "x86_64-darwin";
-            specialArgs = inputs;
-            modules = [
-              nix-homebrew.darwinModules.nix-homebrew
-              home-manager.darwinModules.home-manager
-              {
-                nix-homebrew = {
-                  enable = true;
-                  user = "green";
-                  taps = {
-                    "homebrew/homebrew-core" = homebrew-core;
-                    "homebrew/homebrew-cask" = homebrew-cask;
-                  };
-                  mutableTaps = false;
-                  autoMigrate = true;
-                };
-              }
-              ./darwin
-            ];
-          };
-        };
 
-
+      nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (system: nixpkgs.lib.nixosSystem {
+        system = system;
+        specialArgs = inputs;
+        modules = [
+          disko.nixosModules.disko
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${user} = import ./nixos/home-manager.nix;
+          }
+          ./nixos
+        ];
+      });
     };
 }
