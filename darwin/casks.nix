@@ -6,14 +6,14 @@
   # "insomnia"
   # "ngrok"
   # "postico"
-  # "visual-studio-code"
-
+  "visual-studio-code"
+  "iterm2"
   # Communication Tools
   # "discord"
   # "loom"
   # "notion"
   # "slack"
-  # "telegram"
+  "telegram"
   # "zoom"
 
   # Utility Tools
@@ -25,11 +25,12 @@
   # "vlc"
 
   # Productivity Tools
-  "raycast"
+  # "raycast"
   # "asana"
 
   # Browsers
-  # "google-chrome"
+  "google-chrome"
+  "homebrew/cask-versions/firefox-developer-edition"
 
   # AI
   # "diffusionbee"

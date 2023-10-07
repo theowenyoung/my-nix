@@ -1,14 +1,13 @@
-{ agenix, config, pkgs, ... }:
+{ user, agenix, config, pkgs, ... }:
 
-let user = "green"; in
 {
 
   imports = [
-    ./secrets.nix
+    # ./secrets.nix
     ./home-manager.nix
-    ../shared
-    ../shared/cachix
-    agenix.darwinModules.default
+    # ../shared 
+    # ../shared/cachix
+    # agenix.darwinModules.default
   ];
 
   # Auto upgrade nix package and the daemon service.
@@ -16,6 +15,7 @@ let user = "green"; in
 
   # Setup user, packages, programs
   nix = {
+    # this is for which nix version to be used.
     package = pkgs.nixUnstable;
     settings.trusted-users = [ "@admin" "${user}" ];
 
@@ -23,24 +23,32 @@ let user = "green"; in
       user = "root";
       automatic = true;
       interval = { Weekday = 0; Hour = 2; Minute = 0; };
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
     };
 
     # Turn this on to make command line easier
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+
+    # substituters = [
+    #   # Replace official cache with a mirror located in China
+    #   #
+    #   # Feel free to remove this line if you are not in China
+    #   "https://mirrors.ustc.edu.cn/nix-channels/store"
+    #   "https://cache.nixos.org"
+    # ];
   };
 
   # Turn off NIX_PATH warnings now that we're using flakes
   system.checks.verifyNixPath = false;
 
   # Load configuration that is shared across systems
-  environment.systemPackages = with pkgs; [
-    agenix.packages."${pkgs.system}".default
-  ] ++ (import ../shared/packages.nix { inherit pkgs; });
+  # environment.systemPackages = with pkgs; [
+  #   agenix.packages."${pkgs.system}".default
+  # ] ++ (import ../shared/packages.nix { inherit pkgs; });
 
-  # Enable fonts dir
+  # Enable fonts management
   fonts.fontDir.enable = true;
 
   system = {
@@ -48,6 +56,8 @@ let user = "green"; in
 
     defaults = {
       LaunchServices = {
+        # https://macos-defaults.com/misc/lsquarantine.html
+        # Turn off the “Application Downloaded from Internet” quarantine warning.
         LSQuarantine = false;
       };
 
@@ -62,13 +72,12 @@ let user = "green"; in
         InitialKeyRepeat = 15;
 
         "com.apple.mouse.tapBehavior" = 1;
-        "com.apple.sound.beep.volume" = 0.0;
-        "com.apple.sound.beep.feedback" = 0;
+ 
       };
 
       dock = {
-        autohide = false;
-        show-recents = false;
+        autohide = true;
+        show-recents = true;
         launchanim = true;
         orientation = "bottom";
         tilesize = 48;
@@ -82,11 +91,6 @@ let user = "green"; in
         Clicking = true;
         TrackpadThreeFingerDrag = true;
       };
-    };
-
-    keyboard = {
-      enableKeyMapping = true;
-      remapCapsLockToControl = true;
     };
   };
 }

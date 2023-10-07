@@ -9,7 +9,7 @@ with pkgs; [
   # bash-completion
   # bat
   # btop
-  # coreutils
+  coreutils
   # difftastic
   # du-dust
   # git-filter-repo
@@ -18,8 +18,8 @@ with pkgs; [
   # openssh
   # pandoc
   # sqlite
-  # wget
-  # zip
+  wget
+  zip
 
   # Encryption and security tools
   # _1password
@@ -78,7 +78,8 @@ with pkgs; [
   # tree
   tmux
   # unrar
-  # unzip
+  unzip
+
   # zsh-powerlevel10k
 
   # Python packages

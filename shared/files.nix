@@ -5,4 +5,10 @@
   # ".emacs.d/init.el" = {
   #   text = builtins.readFile ../shared/config/emacs/init.el;
   # };
+  ".zsh/custom" = {
+    source = ./config/zsh;
+  };
+  ".config/nvim/NvChad" = {
+    source = ./config/nvim/NvChad;
+  };
 }

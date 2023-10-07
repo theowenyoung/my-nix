@@ -109,11 +109,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1696446489,
-        "narHash": "sha256-xSjMKdNR+q/3hdSPyg/LUMsZT/WIoUi8dcm5zT4SMUQ=",
+        "lastModified": 1696635169,
+        "narHash": "sha256-gOjLe7maQ58erN/9ykb6d2ePAU7QAT1D8u7qin9gt+c=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "68f7d8c0fb0bfc67d1916dd7f06288424360d43a",
+        "rev": "b2a2133c9a0b0aa4d06d72b5891275f263ee08df",
         "type": "github"
       },
       "original": {
@@ -134,6 +134,38 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-darwin": {
+      "locked": {
+        "lastModified": 1696659945,
+        "narHash": "sha256-EV3ACS0dc8kvGm2ZFHW8bmjby1MyQj8ANm4yZDJkCjM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a8b21f03648692feec095ed41cc695cd226d4aea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-23.05-darwin",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-webextfixed": {
+      "locked": {
+        "lastModified": 1695927022,
+        "narHash": "sha256-U4gjs92ZU8sDDWtqSB+EVK8iAE5mRJrrqWacbicpsSI=",
+        "owner": "wingdeans",
+        "repo": "nixpkgs",
+        "rev": "f8a86c202752b228452e724f8b204f5281ef4ffc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wingdeans",
+        "ref": "web-ext-node-env",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -177,17 +209,19 @@
         "disko": "disko",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-darwin": "nixpkgs-darwin",
+        "nixpkgs-webextfixed": "nixpkgs-webextfixed",
         "secrets": "secrets"
       }
     },
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1696487305,
-        "narHash": "sha256-DJ6ckHzed5IWXD5W8hu5L0qVoB7s0xdWnX4yEa3nk88=",
+        "lastModified": 1696598666,
+        "narHash": "sha256-64jDC85BNay3FkpmaQgwX+9fgO5PUe5HY14dyRlA95s=",
         "ref": "refs/heads/main",
-        "rev": "90e926b796d4e1e06ad0296fbade6b4005fb38ec",
-        "revCount": 142,
+        "rev": "19e7b5fdf3a3bffc3624fd93e9fb76ed64b84422",
+        "revCount": 143,
         "type": "git",
         "url": "ssh://git@github.com/theowenyoung/private.git"
       },

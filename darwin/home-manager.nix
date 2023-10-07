@@ -1,7 +1,6 @@
-{ config, pkgs, lib, home-manager, ... }:
+{ user, name, system,  email,config, pkgs, lib, home-manager,nixpkgs-webextfixed, ... }:
 
 let
-  user = "green";
   sharedFiles = import ../shared/files.nix { inherit config pkgs; };
   additionalFiles = import ./files.nix { inherit config pkgs; };
 in
@@ -18,8 +17,8 @@ in
     shell = pkgs.zsh;
   };
 
-  #homebrew.enable = true;
-  #homebrew.casks = pkgs.callPackage ./casks.nix { };
+  homebrew.enable = true;
+  homebrew.casks = pkgs.callPackage ./casks.nix { };
 
   # These app IDs are from using the mas CLI app
   # mas = mac app store
@@ -28,24 +27,24 @@ in
   # $ nix shell nixpkgs#mas
   # $ mas search <app name>
   #
-  # homebrew.masApps = {
-  #   "1password" = 1333542190;
-  #   "wireguard" = 1451685025;
-  # };
+  homebrew.masApps = {
+    "ipic" = 1101244278;
+    "s3-files" = 6447647340;
+  };
 
   # Enable home-manager
   home-manager = {
     useGlobalPkgs = true;
     users.${user} = { pkgs, config, lib, ... }: {
       home.enableNixpkgsReleaseCheck = false;
-      home.packages = pkgs.callPackage ./packages.nix { };
+      home.packages = [nixpkgs-webextfixed.legacyPackages.${system}.nodePackages."web-ext"] ++ pkgs.callPackage ./packages.nix { };
       home.file = lib.mkMerge [
         sharedFiles
         additionalFiles
       ];
 
       home.stateVersion = "21.11";
-      programs = { } // import ../shared/home-manager.nix { inherit config pkgs lib; };
+      programs = { } // import ../shared/home-manager.nix { inherit config pkgs lib name email user; };
 
       # Marked broken Oct 20, 2022 check later to remove this
       # https://github.com/nix-community/home-manager/issues/3344

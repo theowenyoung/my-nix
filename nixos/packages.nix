@@ -6,8 +6,8 @@ shared-packages ++ [
 
   # Security and authentication
   _1password-gui
-  yubikey-manager-qt
-  yubikey-agent
+  # yubikey-manager-qt
+  # yubikey-agent
   keepassxc
 
   # App and package management
