@@ -8,7 +8,10 @@
   ".zsh/custom" = {
     source = ./config/zsh;
   };
-  ".config/nvim/NvChad" = {
-    source = ./config/nvim/NvChad;
-  };
+  # ".config/nvim/lua" = {
+  #   source = ./config/nvim/NvChad/lua;
+  # };
+  #  ".config/nvim/snippets" = {
+  #   source = ./config/nvim/NvChad/snippets;
+  # };
 }

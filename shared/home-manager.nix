@@ -17,7 +17,7 @@
      viAlias = true;
   vimAlias = true;
   extraConfig = ''
-      luafile ~/.config/nvim/NvChad/lua/init.lua
+      luafile ~/.config/nvim/lua/init.lua
     '';
 
   };

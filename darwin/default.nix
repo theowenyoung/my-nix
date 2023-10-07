@@ -49,48 +49,53 @@
   # ] ++ (import ../shared/packages.nix { inherit pkgs; });
 
   # Enable fonts management
-  fonts.fontDir.enable = true;
-
-  system = {
-    stateVersion = 4;
-
-    defaults = {
-      LaunchServices = {
-        # https://macos-defaults.com/misc/lsquarantine.html
-        # Turn off the “Application Downloaded from Internet” quarantine warning.
-        LSQuarantine = false;
-      };
-
-      NSGlobalDomain = {
-        AppleShowAllExtensions = true;
-        ApplePressAndHoldEnabled = false;
-
-        # 120, 90, 60, 30, 12, 6, 2
-        KeyRepeat = 2;
-
-        # 120, 94, 68, 35, 25, 15
-        InitialKeyRepeat = 15;
-
-        "com.apple.mouse.tapBehavior" = 1;
- 
-      };
-
-      dock = {
-        autohide = true;
-        show-recents = true;
-        launchanim = true;
-        orientation = "bottom";
-        tilesize = 48;
-      };
-
-      finder = {
-        _FXShowPosixPathInTitle = false;
-      };
-
-      trackpad = {
-        Clicking = true;
-        TrackpadThreeFingerDrag = true;
-      };
-    };
+  fonts = {
+    fontDir.enable = true;
+    fonts = [
+      (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    ];
   };
+
+#   system = {
+#     stateVersion = 4;
+
+#     defaults = {
+#       LaunchServices = {
+#         # https://macos-defaults.com/misc/lsquarantine.html
+#         # Turn off the “Application Downloaded from Internet” quarantine warning.
+#         LSQuarantine = false;
+#       };
+
+#       NSGlobalDomain = {
+#         AppleShowAllExtensions = true;
+#         ApplePressAndHoldEnabled = false;
+
+#         # 120, 90, 60, 30, 12, 6, 2
+#         KeyRepeat = 2;
+
+#         # 120, 94, 68, 35, 25, 15
+#         InitialKeyRepeat = 15;
+
+#         "com.apple.mouse.tapBehavior" = 1;
+ 
+#       };
+
+#       dock = {
+#         autohide = true;
+#         show-recents = true;
+#         launchanim = true;
+#         orientation = "bottom";
+#         tilesize = 48;
+#       };
+
+#       finder = {
+#         _FXShowPosixPathInTitle = false;
+#       };
+
+#       trackpad = {
+#         Clicking = true;
+#         TrackpadThreeFingerDrag = true;
+#       };
+#     };
+#   };
 }

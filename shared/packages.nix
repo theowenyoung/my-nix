@@ -74,8 +74,8 @@ with pkgs; [
   # iftop
   # jetbrains-mono
   jq
-  # ripgrep
-  # tree
+  ripgrep
+  tree
   tmux
   # unrar
   unzip
